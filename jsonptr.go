@@ -33,7 +33,7 @@ func New(s string) (Ptr, error) {
 	}
 
 	if !strings.HasPrefix(s, "/") {
-		return Ptr{}, &Error{parseError: s}
+		return Ptr{}, ErrInvalidPtr
 	}
 
 	tokens := strings.Split(s, "/")[1:]
@@ -76,15 +76,15 @@ func (p Ptr) Eval(doc interface{}) (*interface{}, error) {
 	for _, token := range p.Tokens {
 		switch v := doc.(type) {
 		case nil, bool, float64, string:
-			return nil, &Error{derefPrimitive: token}
+			return nil, ErrEvalPtr
 		case []interface{}:
 			n, err := strconv.ParseInt(token, 10, 0)
 			if err != nil {
-				return nil, &Error{numParseError: token}
+				return nil, ErrEvalPtr
 			}
 
 			if n < 0 || int(n) >= len(v) {
-				return nil, &Error{indexOutOfBounds: int(n)}
+				return nil, ErrEvalPtr
 			}
 
 			doc = v[n]
@@ -93,10 +93,10 @@ func (p Ptr) Eval(doc interface{}) (*interface{}, error) {
 			doc, ok = v[token]
 
 			if !ok {
-				return nil, &Error{noSuchProperty: token}
+				return nil, ErrEvalPtr
 			}
 		default:
-			return nil, &Error{notJSON: &v}
+			return nil, ErrEvalPtr
 		}
 	}
 

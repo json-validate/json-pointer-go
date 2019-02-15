@@ -60,25 +60,25 @@ var evalTests = []struct {
 		[]string{"a"},
 		nil,
 		nil,
-		&Error{derefPrimitive: "a"},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"a"},
 		true,
 		nil,
-		&Error{derefPrimitive: "a"},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"a"},
 		3.14,
 		nil,
-		&Error{derefPrimitive: "a"},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"a"},
 		"a",
 		nil,
-		&Error{derefPrimitive: "a"},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"0"},
@@ -102,13 +102,13 @@ var evalTests = []struct {
 		[]string{"3"},
 		[]interface{}{true, 3.14, "a"},
 		nil,
-		&Error{indexOutOfBounds: 3},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"a"},
 		[]interface{}{true, 3.14, "a"},
 		nil,
-		&Error{numParseError: "a"},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"foo"},
@@ -132,7 +132,7 @@ var evalTests = []struct {
 		[]string{"quux"},
 		map[string]interface{}{"foo": true, "bar": 3.14, "baz": "a"},
 		nil,
-		&Error{noSuchProperty: "quux"},
+		ErrEvalPtr,
 	},
 	{
 		[]string{"foo", "1", "bar"},
@@ -151,7 +151,7 @@ var evalTests = []struct {
 		[]string{""},
 		struct{}{},
 		nil,
-		&Error{notJSON: &wrappedEmptyStruct},
+		ErrEvalPtr,
 	},
 }
 
@@ -194,7 +194,7 @@ var newAndParseTests = []struct {
 	{"/ ", []string{" "}, nil},
 	{"/m~0n", []string{"m~n"}, nil},
 	{"/o~0~1p/q~1~0r", []string{"o~/p", "q/~r"}, nil},
-	{" ", nil, &Error{parseError: " "}},
+	{" ", nil, ErrInvalidPtr},
 }
 
 func TestNewAndParse(t *testing.T) {
