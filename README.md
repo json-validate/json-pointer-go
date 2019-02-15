@@ -3,8 +3,8 @@
 This library is a Golang implementation of [RFC6901][rfc6901] "JavaScript Object
 Notation (JSON) Pointer".
 
-[badge]: https://godoc.org/github.com/json-schema-spec/json-pointer?status.svg
-[godoc]: https://godoc.org/github.com/json-schema-spec/json-pointer
+[badge]: https://godoc.org/github.com/json-schema-spec/json-pointer-go?status.svg
+[godoc]: https://godoc.org/github.com/json-schema-spec/json-pointer-go
 
 ## Usage
 
