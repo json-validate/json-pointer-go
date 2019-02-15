@@ -20,7 +20,8 @@ type Ptr struct {
 // This function will handle JSON Pointer escape sequences, converting "~0" to
 // "~" and "~1" to "/".
 //
-// If s is not empty and does not begin with "/", an error will be returned.
+// If s is not empty and does not begin with "/", ErrInvalidPtr will be
+// returned.
 func New(s string) (Ptr, error) {
 	// From the ABNF syntax of JSON Pointer, the only valid initial character for
 	// a JSON Pointer is "/". Empty strings are acceptable.
@@ -69,9 +70,7 @@ func (p Ptr) String() string {
 }
 
 // Eval evaluates a Ptr against a document, returning a (Golang) pointer into
-// that document.
-//
-// Errors, if returned, will be instances of Error from this package.
+// that document. If any error is returned, it will be ErrEvalPtr.
 func (p Ptr) Eval(doc interface{}) (*interface{}, error) {
 	for _, token := range p.Tokens {
 		switch v := doc.(type) {
